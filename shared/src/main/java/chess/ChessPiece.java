@@ -2,6 +2,8 @@ package chess;
 
 import java.util.Collection;
 
+import chess.piecemoves.MovesCalculator;
+
 /**
  * Represents a single chess piece
  * <p>
@@ -10,12 +12,6 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
-    }
-
-    /**
-     * The various different chess piece options
-     */
     public enum PieceType {
         KING,
         QUEEN,
@@ -24,19 +20,42 @@ public class ChessPiece {
         ROOK,
         PAWN
     }
+    private final ChessGame.TeamColor pieceColor;
+    private final PieceType type;
+    private MovesCalculator moveCalculator;
+
+//    this.MovesCalculator = switch (this.type) {
+//        case PAWN -> new PawnMovesCalculator();
+//        case BISHOP -> new BishopMovesCalculator();
+//        case ROOK -> new RookMovesCalculator();
+//        case KING -> new KingMovesCalculator();
+//        case QUEEN -> new QueenMovesCalculator();
+//        case KNIGHT -> new KnightMovesCalculator();
+//    };
+
+
+    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
+        //this.MovesCalculator = moveCalculator;
+    }
+
+    /**
+     * The various different chess piece options
+     */
 
     /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return type;
     }
 
     /**
