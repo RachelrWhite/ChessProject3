@@ -1,8 +1,10 @@
 package chess;
 
-import java.util.Collection;
+import chess.piecemoves.*;
 
-import chess.piecemoves.MovesCalculator;
+import java.util.Collection;
+import java.util.Objects;
+
 
 /**
  * Represents a single chess piece
@@ -24,20 +26,20 @@ public class ChessPiece {
     private final PieceType type;
     private MovesCalculator moveCalculator;
 
-//    this.MovesCalculator = switch (this.type) {
-//        case PAWN -> new PawnMovesCalculator();
-//        case BISHOP -> new BishopMovesCalculator();
-//        case ROOK -> new RookMovesCalculator();
-//        case KING -> new KingMovesCalculator();
-//        case QUEEN -> new QueenMovesCalculator();
-//        case KNIGHT -> new KnightMovesCalculator();
-//    };
 
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
         //this.MovesCalculator = moveCalculator;
+        this.moveCalculator = switch (this.type) {
+            case PAWN -> new PawnMovesCalculator();
+            case BISHOP -> new BishopMovesCalculator();
+            case ROOK -> new RookMovesCalculator();
+            case KING -> new KingMovesCalculator();
+            case QUEEN -> new QueenMovesCalculator();
+            case KNIGHT -> new KnightMovesCalculator();
+        };
     }
 
     /**
@@ -66,6 +68,29 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        return moveCalculator.calculate(board, myPosition, this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "pieceColor=" + pieceColor +
+                ", type=" + type +
+                ", moveCalculator=" + moveCalculator +
+                '}';
     }
 }
